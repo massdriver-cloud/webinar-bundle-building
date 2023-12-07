@@ -14,17 +14,6 @@ module "lambda_application" {
   execution_timeout = var.runtime.execution_timeout
 }
 
-
-resource aws_iam_role_policy_attachment "attach_s3_read_policy" {
-  role       = local.role_name
-  policy_arn = var.s3_bucket.data.security.iam.read.policy_arn
-}
-
-resource aws_iam_role_policy_attachment "attach_s3_write_policy" {
-  role       = local.role_name
-  policy_arn = var.s3_bucket.data.security.iam.write.policy_arn
-}
-
 ########
 
 resource "aws_api_gateway_resource" "download" {
