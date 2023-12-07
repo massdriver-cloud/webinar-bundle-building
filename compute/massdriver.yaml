@@ -1,7 +1,7 @@
 schema: draft-07
-name: ducktape-api-lambda
+name: example-api-lambda
 description: lambda behind api gateway
-source_url: github.com/YOUR_ORG/ducktape-api-lambda
+source_url: github.com/massdriver-cloud/webinar-bundle-building
 access: private
 type: application
 
