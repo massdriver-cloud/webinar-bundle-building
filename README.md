@@ -74,7 +74,6 @@ If you're new to Massdriver, start by completing [Massdriver onboarding](https:/
 ```
 export ARTIFACT_ID=<your-artifact-id>
 ```
->>> SCREEN_TO_GIF_GOES_HERE
 
 ### Step 2: Clone the Repository
 Clone this repository to your local machine. This will include the necessary files for the Lambda bundle and the FastAPI application.
