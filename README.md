@@ -83,15 +83,14 @@ Clone this repository to your local machine. This will include the necessary fil
 git clone git@github.com:massdriver-cloud/webinar-bundle-building.git
 ```
 ### Step 3: Build and Push Docker Image
-Navigate to the application directory and run the following command to build the Docker image for your FastAPI Python code and push it to Amazon ECR:
+Run the following command to trigger the Massdriver CLI and build the Docker image for your FastAPI Python code and push it to AWS ECR:
 
 ```
-cd webinar-bundle-building
 make mass_push
 ```
 
 ### Step 4: Publish the Lambda Bundle
-Publish the Lambda bundle to your Massdriver Catalog. This step lints and validates the bundle before publishing.
+Publish the Lambda bundle to your Massdriver Catalog. This step lints and validates the bundle before publishing (via Massdriver CLI).
 
 ```
 make mass_publish
@@ -101,14 +100,14 @@ make mass_publish
 In your Massdriver dashboard, drag and drop the Lambda bundle onto the Canvas. This action will automatically generate the upstream dependencies for an S3 bucket and API Gateway.
 
 ### Step 6: Configure S3 Bucket and API Gateway
-Fill out the minimal configurations for the S3 Bucket and API Gateway in the Massdriver UI. Once these resources are deployed, configure the Lambda function. Note that there are structured dependency requirements for upstream and downstream bundles.
+Fill out the minimal configurations for the S3 Bucket and API Gateway in the Massdriver UI. Once these resources are deployed, configure the Lambda function. Note that there are structured dependency requirements for upstream and downstream bundles. This is based on Artifacts being treated as an outputs and Connections being treated as inputs for the bundles.
 
 ### Step 7: Interact with Your API
 Once your API is deployed, you can interact with it using curl commands. The available endpoints are /test, /upload, and /download. Here are some example commands to get you started:
 
+*You can find your <gateway_hash> as `aws api gateway rest api` in the API Gateway Bundle's resource page. You may need to modify the region as well.*
 
-
-### Test Endpoint
+#### Test Endpoint
 This command tests the connection to your API Gateway. Replace <gateway_hash> with your actual gateway hash.
 
 ```
@@ -116,7 +115,7 @@ curl --location --request GET 'https://<gateway_hash>.execute-api.us-east-1.amaz
 ```
 
 
-### Upload Endpoint
+#### Upload Endpoint
 This command uploads a file to your S3 bucket via the API Gateway. Replace <gateway_hash> with your actual gateway hash.
 ```
 curl --location --request POST 'https://<gateway_hash>.execute-api.us-east-1.amazonaws.com/live/upload' \
@@ -127,7 +126,7 @@ curl --location --request POST 'https://<gateway_hash>.execute-api.us-east-1.ama
 }'
 ```
 
-### Download Endpoint
+#### Download Endpoint
 This command downloads a file from your S3 bucket via the API Gateway.
 ```
 curl --location --request GET 'https://<gateway_hash>.execute-api.us-east-1.amazonaws.com/live/download' \
