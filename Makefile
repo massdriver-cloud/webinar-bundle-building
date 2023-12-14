@@ -3,4 +3,5 @@ mass_push:
 
 mass_publish:
 	cd lambda_bundle && mass bundle lint
+	cd lambda_bundle && mass bundle build
 	cd lambda_bundle && mass bundle publish
