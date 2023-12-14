@@ -95,13 +95,20 @@ Publish the Lambda bundle to your Massdriver Catalog. This step lints and valida
 make mass_publish
 ```
 
-### Step 5: Configure on Massdriver Canvas
+### Step 5: Massdriver Canvas
 In your Massdriver dashboard, drag and drop the Lambda bundle onto the Canvas. This action will automatically generate the upstream dependencies for an S3 bucket and API Gateway.
+![Massdriver Canvas](misc/gifs/step_5.gif)
 
 ### Step 6: Configure S3 Bucket and API Gateway
 Fill out the minimal configurations for the S3 Bucket and API Gateway in the Massdriver UI. Once these resources are deployed, configure the Lambda function. Note that there are structured dependency requirements for upstream and downstream bundles. This is based on Artifacts being treated as an outputs and Connections being treated as inputs for the bundles.
+![Configure S3 Bucket and API Gateway](misc/gifs/step_6.gif)
 
-### Step 7: Interact with Your API
+### Step 7: Deploy Lambda Bundle with FastAPI Docker Image
+After configuring the S3 bucket and API Gateway, the next step is to deploy your Lambda bundle that contains the FastAPI Docker image. Navigate to the Lambda bundle in your Massdriver canvas, fill out the config, and deploy! We've pre-filled values for the demo in [massdriver.yaml](lambda_bundle/massdriver.yaml) as defaults to make this step easy. In your Lambdas, you'll want to tailor the fields to your usecase.
+
+![Deploy Lambda Bundle with FastAPI Docker Image](misc/gifs/step_7.gif)
+
+### Step 8: Interact with Your API
 Once your API is deployed, you can interact with it using curl commands. The available endpoints are /test, /upload, and /download. Here are some example commands to get you started:
 
 *You can find your <gateway_hash> as `aws api gateway rest api` in the API Gateway Bundle's resource page. You may need to modify the region as well.*
@@ -115,7 +122,10 @@ curl --location --request GET 'https://<gateway_hash>.execute-api.us-east-1.amaz
 
 
 #### Upload Endpoint
-This command uploads a file to your S3 bucket via the API Gateway. Replace <gateway_hash> with your actual gateway hash.
+This command uploads a file to your S3 bucket via the API Gateway. Replace <gateway_hash> with your actual gateway hash. Once the cURL is sent, you can check your S3 bucket in your AWS account and see the lambda fired and uploaded a `textfile.txt` to S3 with the content "This is testfile.txt!"
+
+If you check the Lambda, you'll see our connection in [massdriver.yaml](lambda_bundle/massdriver.yaml) from S3 has injected the S3 bucket name as an environment variable and applied read and write permissions to our execution role in order to allow this.
+
 ```
 curl --location --request POST 'https://<gateway_hash>.execute-api.us-east-1.amazonaws.com/live/upload' \
 --header 'Content-Type: application/json' \
@@ -126,7 +136,9 @@ curl --location --request POST 'https://<gateway_hash>.execute-api.us-east-1.ama
 ```
 
 #### Download Endpoint
-This command downloads a file from your S3 bucket via the API Gateway.
+This command downloads a file from your S3 bucket via the API Gateway. 
+
+This reads `testfile.txt`, which we uploaded with our `/upload` endpoint.
 ```
 curl --location --request GET 'https://<gateway_hash>.execute-api.us-east-1.amazonaws.com/live/download' \
 --header 'Content-Type: application/json' \
